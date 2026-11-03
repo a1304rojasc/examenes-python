@@ -42,8 +42,7 @@ def generar(examen: Path) -> None:
             salida.append("\n".join(bloque_txt) + f"\n{sangria}raise NotImplementedError(\"Implementa {nodo.name}\")\n")
         else:
             salida.append(ast.get_source_segment(fuente, nodo) + "\n")
-    texto = "\n".join(s if s.endswith("\n") else s + "\n" for s in salida)
-    texto = texto.replace("\n\n\n\n", "\n\n\n")
+    texto = "\n\n\n".join(s.rstrip("\n") for s in salida) + "\n"
     (examen / "ejercicios.py").write_text(texto, encoding="utf-8")
     print(f"generado {examen.relative_to(RAIZ)}/ejercicios.py")
 

@@ -54,7 +54,7 @@ def buscar_examen(bloque: str, nivel: str) -> Path:
 
 def corregir(examen: Path, solucion: bool, detalle: bool = True) -> int:
     rec = Recolector()
-    args = [str(examen / "tests"), "-c", str(RAIZ / "pytest.ini"), "--rootdir", str(RAIZ), "-qq", "--tb=no", "--no-header", "-p", "no:terminal"]
+    args = [str(examen / "tests"), "-c", str(RAIZ / "pytest.ini"), "--rootdir", str(RAIZ), "-p", "no:terminal"]
     if solucion:
         args.append("--solucion")
     pytest.main(args, plugins=[rec])
