@@ -38,6 +38,8 @@ def generar(examen: Path) -> None:
             getattr(t, "id", "").startswith("PATRON") or getattr(t, "id", "").startswith("_") for t in nodo.targets
         ):
             continue  # patrones y ayudantes privados (_) son parte de la solución
+        if isinstance(nodo, ast.ClassDef) and nodo.name.startswith("_"):
+            continue  # clase ayudante privada: parte de la solución
         if isinstance(nodo, ast.FunctionDef):
             if nodo.name.startswith("_"):
                 continue  # función ayudante privada: no se regala ni se pide como ejercicio
