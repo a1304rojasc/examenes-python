@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Genera ejercicios.py (plantilla para el alumno) a partir de solucion.py.
 
-Conserva imports, constantes, firmas y docstrings; sustituye el cuerpo de
+Conserva imports, constantes (salvo las PATRON_*, que son parte de la
+solución), firmas y docstrings; sustituye el cuerpo de
 cada función por `raise NotImplementedError`.
 
 Uso:  python herramientas/generar_ejercicios.py [ruta/a/examen ...]
@@ -33,6 +34,8 @@ def generar(examen: Path) -> None:
     for nodo in arbol.body:
         if isinstance(nodo, ast.Expr) and isinstance(getattr(nodo, "value", None), ast.Constant) and nodo is arbol.body[0]:
             continue  # docstring del módulo
+        if isinstance(nodo, ast.Assign) and any(getattr(t, "id", "").startswith("PATRON") for t in nodo.targets):
+            continue  # los patrones regex son parte de la solución: no se regalan
         if isinstance(nodo, ast.FunctionDef):
             inicio = (nodo.decorator_list[0].lineno if nodo.decorator_list else nodo.lineno) - 1
             primero = nodo.body[0]

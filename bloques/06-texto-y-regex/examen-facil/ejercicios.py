@@ -7,10 +7,6 @@ Corrige con:  python corregir.py 06 facil
 
 import re
 
-PATRON_IP = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
-PATRON_USUARIO = re.compile(r"(?:Failed|Accepted) \w+ for (?:invalid user )?(\S+) from")
-PATRON_EMAIL = re.compile(r"[^@\s]+@[^@\s]+\.[A-Za-z]{2,}")
-
 
 def normalizar_espacios(texto):
     """Quita espacios en los extremos y deja uno solo entre palabras."""

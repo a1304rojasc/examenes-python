@@ -7,21 +7,6 @@ Corrige con:  python corregir.py 06 dificil
 
 import re
 
-PATRON_SSHD = re.compile(
-    r"""
-    ^(?P<fecha>\w{3}\s+\d{1,2}\s\d{2}:\d{2}:\d{2})\s   # Mar 10 08:15:01
-    (?P<host>\S+)\s                                    # servidor
-    sshd\[(?P<pid>\d+)\]:\s                            # sshd[1234]:
-    (?P<evento>Failed|Accepted)\s
-    (?P<metodo>\w+)\sfor\s
-    (?P<invalido>invalid\suser\s)?                     # opcional
-    (?P<usuario>\S+)\sfrom\s
-    (?P<ip>\S+)\sport\s(?P<puerto>\d+)
-    """,
-    re.VERBOSE,
-)
-PATRON_IP = re.compile(r"\b(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\b")
-
 
 def parsear_linea(linea):
     """Dict con fecha, host, pid, evento, metodo, usuario, invalido, ip y puerto, o None."""
