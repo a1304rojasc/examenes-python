@@ -2,9 +2,9 @@
 """Corrector automático de exámenes.
 
 Uso:
-    python corregir.py 03 facil          # corrige bloques/03-*/examen-facil/ejercicios.py
-    python corregir.py 7 dificil
-    python corregir.py 03 facil --solucion   # comprueba la solución oficial
+    python corregir.py P facil           # corrige bloques/P-*/examen-facil/ejercicios.py
+    python corregir.py 06 dificil
+    python corregir.py 6 facil --solucion    # comprueba la solución oficial
     python corregir.py todo [--solucion]     # todos los exámenes
 
 Nota: cada uno de los 5 ejercicios de código vale 1 punto. Un ejercicio
@@ -22,6 +22,16 @@ except ImportError:
 
 RAIZ = Path(__file__).resolve().parent
 NIVELES = {"facil": "examen-facil", "fácil": "examen-facil", "dificil": "examen-dificil", "difícil": "examen-dificil"}
+
+
+def _clave_orden(bloque: Path):
+    """Ordena los bloques: P primero, luego 06, 07, ... numéricamente."""
+    prefijo = bloque.name.split("-")[0]
+    return (0, 0) if prefijo.upper() == "P" else (1, int(prefijo))
+
+
+def bloques_ordenados():
+    return sorted((RAIZ / "bloques").glob("*-*"), key=_clave_orden)
 
 
 class Recolector:
@@ -46,7 +56,8 @@ def buscar_examen(bloque: str, nivel: str) -> Path:
     nivel_dir = NIVELES.get(nivel.lower())
     if not nivel_dir:
         sys.exit(f"Nivel desconocido: {nivel!r}. Usa 'facil' o 'dificil'.")
-    candidatos = sorted((RAIZ / "bloques").glob(f"{bloque.zfill(2)}-*"))
+    prefijo = bloque.upper() if bloque.upper() == "P" else bloque.zfill(2)
+    candidatos = sorted((RAIZ / "bloques").glob(f"{prefijo}-*"))
     if not candidatos:
         sys.exit(f"No existe el bloque {bloque}.")
     return candidatos[0] / nivel_dir
@@ -81,11 +92,11 @@ def main(argv):
     archivo = "solucion.py" if solucion else "ejercicios.py"
     if argv and argv[0] == "todo":
         total = 0
-        for bloque in sorted((RAIZ / "bloques").glob("[0-9][0-9]-*")):
+        for bloque in bloques_ordenados():
             for nivel in ("examen-facil", "examen-dificil"):
                 nota = corregir(bloque / nivel, solucion, detalle=False)
                 total += nota
-                print(f"{bloque.name:<32} {nivel:<15} {nota}/5")
+                print(f"{bloque.name:<34} {nivel:<15} {nota}/5")
         print(f"\nTotal: {total} ejercicios correctos ({archivo})")
         return 0
     if len(argv) != 2:

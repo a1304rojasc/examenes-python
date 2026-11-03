@@ -26,7 +26,7 @@ def generar(examen: Path) -> None:
     fuente = (examen / "solucion.py").read_text(encoding="utf-8")
     lineas = fuente.splitlines()
     arbol = ast.parse(fuente)
-    bloque = examen.parent.name[:2]
+    bloque = examen.parent.name.split("-")[0]
     nivel = "facil" if examen.name.endswith("facil") else "dificil"
     titulo = f"Bloque {bloque} · Examen {'fácil' if nivel == 'facil' else 'difícil'} — ejercicios"
     previo_import = False

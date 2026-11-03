@@ -1,0 +1,12 @@
+# Bloque P · Examen difícil — Soluciones (teoría)
+
+1. Big O describe cómo crece el **número de operaciones** (o la memoria) a medida que crece el tamaño de la entrada. Se ignoran constantes y términos menores porque, para entradas grandes, el término dominante marca el comportamiento; `3n + 100` y `n` crecen igual de rápido: ambos son O(n).
+2. En cada paso descarta la **mitad** de los datos restantes, así que con `n` elementos necesita a lo sumo ~log₂(n) pasos. Requiere que los datos estén **ordenados**: solo así saber que el centro es mayor que el objetivo permite descartar toda la mitad derecha.
+3. Los tres son O(n²) en el peor caso. Diferencias: selection siempre hace el mismo número de comparaciones (busca el mínimo y lo coloca); insertion es rápido si los datos ya están casi ordenados (O(n) en el mejor caso); bubble intercambia adyacentes repetidamente y puede detenerse antes si en una pasada no hubo cambios.
+4. Merge sort **divide** la lista por la mitad repetidamente: hay ~log n niveles de división. En cada nivel se recorren en total los `n` elementos al fusionar. n elementos × log n niveles = O(n log n). Bubble recorre todo por cada elemento → n × n.
+5. El caso base es la condición en la que la función devuelve un resultado **sin volver a llamarse**. Si falta o nunca se alcanza, la recursión no termina y se agota la pila (`RecursionError`).
+6. El backtracking explora opciones una a una; cuando una no lleva a solución, **deshace** la última decisión y prueba otra. Lo necesitan problemas de combinaciones/caminos, como dar cambio exacto, resolver un sudoku o encontrar una ruta en un laberinto.
+7. Cada llamada recursiva pendiente ocupa un marco en la **pila**; con profundidad `d` hay `d` marcos vivos a la vez. La versión iterativa usa una sola estructura y espacio constante (o el de una pila explícita que controlas).
+8. El negativo es `255 - imagen`: invierte cada intensidad (lo oscuro se vuelve claro). Recortar es `imagen[f1:f2, c1:c2]`: se seleccionan las filas de `f1` a `f2` y las columnas de `c1` a `c2`, es decir, un rango en cada dimensión.
+9. Cada elemento se empareja con los `n-1` restantes, pero cada pareja se cuenta dos veces, así que hay `n·(n-1)/2` parejas. Ese valor crece como `n²/2`, por eso compararlas todas es O(n²).
+10. Conviene **parar y repasar el concepto** (p. ej. una sesión Feynman): si el error se repite, el problema no es un despiste sino un malentendido de fondo. Parchear el síntoma lo deja latente y reaparecerá en el siguiente ejercicio.
