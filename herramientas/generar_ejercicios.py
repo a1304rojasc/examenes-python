@@ -34,9 +34,13 @@ def generar(examen: Path) -> None:
     for nodo in arbol.body:
         if isinstance(nodo, ast.Expr) and isinstance(getattr(nodo, "value", None), ast.Constant) and nodo is arbol.body[0]:
             continue  # docstring del módulo
-        if isinstance(nodo, ast.Assign) and any(getattr(t, "id", "").startswith("PATRON") for t in nodo.targets):
-            continue  # los patrones regex son parte de la solución: no se regalan
+        if isinstance(nodo, ast.Assign) and any(
+            getattr(t, "id", "").startswith("PATRON") or getattr(t, "id", "").startswith("_") for t in nodo.targets
+        ):
+            continue  # patrones y ayudantes privados (_) son parte de la solución
         if isinstance(nodo, ast.FunctionDef):
+            if nodo.name.startswith("_"):
+                continue  # función ayudante privada: no se regala ni se pide como ejercicio
             inicio = (nodo.decorator_list[0].lineno if nodo.decorator_list else nodo.lineno) - 1
             primero = nodo.body[0]
             tiene_doc = isinstance(primero, ast.Expr) and isinstance(primero.value, ast.Constant) and isinstance(primero.value.value, str)

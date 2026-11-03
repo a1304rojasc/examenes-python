@@ -1,0 +1,12 @@
+# Bloque 6 · Examen difícil — Soluciones (teoría)
+
+1. AES-GCM añade una **etiqueta de autenticación**: al descifrar, si el criptograma fue alterado, falla en lugar de devolver basura. El **AAD** son datos que viajan en claro pero quedan autenticados (p. ej. un identificador de expediente): si alguien los cambia, el descifrado también falla, evitando "mover" un criptograma a otro contexto.
+2. Porque GCM usa el nonce para generar el flujo de cifrado; repetirlo con la misma clave permite combinar dos criptogramas y recuperar texto en claro, e incluso falsificar la etiqueta de autenticación. La seguridad se rompe por completo.
+3. Se firma el **hash** del mensaje con la clave **privada**. Verificar con la **pública** demuestra que quien firmó poseía la privada (autenticidad) y que el mensaje no cambió (integridad): si cambia un byte, la verificación falla.
+4. **Cifrar para alguien**: clave **pública** del destinatario (cifra) y **privada** del destinatario (descifra). **Firmar**: clave **privada** del emisor (firma) y **pública** del emisor (verifica). Son inversas y usan claves de dueños distintos.
+5. Cada parte combina su **privada** con la **pública** de la otra y obtiene el mismo valor. Un espía ve las dos públicas, pero derivar el secreto a partir de ellas es el problema del logaritmo discreto en la curva, computacionalmente inviable.
+6. Claves mucho más cortas para la misma seguridad (256 bits ≈ RSA 3072), operaciones más rápidas, menos cómputo y menos ancho de banda. Ideales para móviles y TLS moderno.
+7. (a) **Vigencia**: no caducado ni usado antes de tiempo → evita certificados viejos/comprometidos. (b) **Cadena de confianza**: firmado por una CA reconocida → evita certificados falsos. (c) **Nombre**: el host coincide con el del certificado → evita que un certificado válido de otro dominio sirva para suplantar.
+8. El emisor y el sujeto son el mismo; se firma a sí mismo, sin una CA que lo respalde. El navegador lo rechaza porque no hay cadena de confianza: cualquiera puede autofirmar un certificado con el nombre que quiera.
+9. **Primero cifrar** el mensaje (p. ej. con AES-GCM) y luego **ocultar el criptograma** con LSB. Así, aunque alguien detecte y extraiga los bits, obtiene datos cifrados ilegibles sin la clave.
+10. Porque el algoritmo acaba conociéndose (ingeniería inversa, filtraciones, estándares públicos). Si la seguridad dependiera del secreto del algoritmo, se desmoronaría al revelarse. Dependiendo solo de la clave, basta con proteger y rotar la clave.
