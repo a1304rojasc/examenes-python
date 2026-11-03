@@ -28,6 +28,7 @@ def generar(examen: Path) -> None:
     bloque = examen.parent.name[:2]
     nivel = "facil" if examen.name.endswith("facil") else "dificil"
     titulo = f"Bloque {bloque} · Examen {'fácil' if nivel == 'facil' else 'difícil'} — ejercicios"
+    previo_import = False
     salida = [CABECERA.format(titulo=titulo, bloque=bloque, nivel=nivel)]
     for nodo in arbol.body:
         if isinstance(nodo, ast.Expr) and isinstance(getattr(nodo, "value", None), ast.Constant) and nodo is arbol.body[0]:
@@ -41,8 +42,15 @@ def generar(examen: Path) -> None:
             sangria = " " * (primero.col_offset)
             salida.append("\n".join(bloque_txt) + f"\n{sangria}raise NotImplementedError(\"Implementa {nodo.name}\")\n")
         else:
-            salida.append(ast.get_source_segment(fuente, nodo) + "\n")
-    texto = "\n\n\n".join(s.rstrip("\n") for s in salida) + "\n"
+            segmento = ast.get_source_segment(fuente, nodo)
+            if salida and salida[-1].startswith("#cod#"):
+                es_import = isinstance(nodo, (ast.Import, ast.ImportFrom))
+                sep = "\n" if es_import == previo_import else "\n\n"
+                salida[-1] += sep + segmento  # imports/constantes seguidos
+            else:
+                salida.append("#cod#" + segmento)
+            previo_import = isinstance(nodo, (ast.Import, ast.ImportFrom))
+    texto = "\n\n\n".join(s.removeprefix("#cod#").rstrip("\n") for s in salida) + "\n"
     (examen / "ejercicios.py").write_text(texto, encoding="utf-8")
     print(f"generado {examen.relative_to(RAIZ)}/ejercicios.py")
 

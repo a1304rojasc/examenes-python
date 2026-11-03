@@ -7,7 +7,6 @@ Corrige con:  python corregir.py 03 facil
 
 import math
 
-
 EVENTOS = 0
 
 
