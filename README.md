@@ -71,7 +71,7 @@ EXAMEN_SOLUCION=1 pytest          # equivalente con variable de entorno
 python corregir.py todo --solucion   # tabla con la nota de cada examen
 ```
 
-Todos deben pasar. Si editas un `solucion.py`, regenera la plantilla del alumno con
+Todos deben pasar (GitHub Actions lo comprueba en cada push: `.github/workflows/soluciones.yml`). Si editas un `solucion.py`, regenera la plantilla del alumno con
 `python herramientas/generar_ejercicios.py bloques/NN-nombre/examen-facil`.
 
 ## Ética
