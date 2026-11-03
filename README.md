@@ -20,6 +20,10 @@ Cada bloque trae repaso espaciado, Examen Fácil y Examen Difícil, y correcció
 > El sílabo completo (Bloques 0–12) y el de Programación Pura están en `silabo/`. Los Bloques 0–5 ya estaban
 > cerrados antes de este banco; aquí se cubre el Bloque P (repaso/ampliación) y del 6 en adelante.
 
+## Lecciones pendientes del Bloque 5
+
+En [`lecciones/05-redes/`](lecciones/05-redes/) hay mini lecciones de **5.4 requests/httpx**, **5.5 Scapy** y **5.6 DNS con dnspython**: caso concreto, teoría y 3 ejercicios con tests cada una. Se corrigen con `pytest lecciones/05-redes/<tema>`.
+
 ## Formato de cada examen
 
 - **Preguntas teóricas abiertas** (nada de opción múltiple): se responden con tus palabras.
